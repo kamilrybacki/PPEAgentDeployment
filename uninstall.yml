@@ -1,0 +1,9 @@
+---
+- name: "install PPEAgent"
+  hosts: "ppeagent-deployer"
+  any_errors_fatal: yes
+  connection: local
+  tasks:
+    - include_role: { name: "ppeagent", tasks_from: "apply" }
+      vars:
+        ppeagent_target_state: "absent"

@@ -1,0 +1,24 @@
+---
+- name: "create PPEAgent namespace"
+  kubernetes.core.k8s:
+    state: "{{ ppeagent_target_state }}"
+    validate_certs: yes
+    definition:
+      apiVersion: "v1"
+      kind: "Namespace"
+      metadata:
+        name: "{{ ppeagent_namespace }}"
+        namespace: "{{ ppeagent_namespace }}"
+  when: "ppeagent_target_state == 'present'"
+
+- name: "delete PPEAgent namespace"
+  kubernetes.core.k8s:
+    state: "{{ ppeagent_target_state }}"
+    validate_certs: yes
+    definition:
+      apiVersion: "v1"
+      kind: "Namespace"
+      metadata:
+        name: "{{ ppeagent_namespace }}"
+        namespace: "{{ ppeagent_namespace }}"
+  when: "ppeagent_target_state == 'absent'"

@@ -1,4 +1,6 @@
 ---
-ppeagent-deployer:
+ppeagent:
   hosts:
     localhost:
+      ansible_connection: local
+      ansible_python_interpreter: "{{ lookup('env', 'HOME') }}/.pyenv/shims/python"

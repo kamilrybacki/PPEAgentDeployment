@@ -1,0 +1,2 @@
+---
+ppeagent_deployer_kubeconfig: "{{ lookup('ansible.builtin.env', 'HOME') }}/.kube/config"

@@ -2,6 +2,7 @@
 - name: "create PPEAgent namespace"
   kubernetes.core.k8s:
     state: "{{ ppeagent_target_state }}"
+    kubeconfig: "{{ ppeagent_deployer_kubeconfig }}"
     validate_certs: yes
     definition:
       apiVersion: "v1"
@@ -14,6 +15,7 @@
 - name: "delete PPEAgent namespace"
   kubernetes.core.k8s:
     state: "{{ ppeagent_target_state }}"
+    kubeconfig: "{{ ppeagent_deployer_kubeconfig }}"
     validate_certs: yes
     definition:
       apiVersion: "v1"

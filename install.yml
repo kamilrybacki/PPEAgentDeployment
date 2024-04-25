@@ -1,6 +1,6 @@
 ---
 - name: "install PPEAgent"
-  hosts: "ppeagent-deployer"
+  hosts: "ppeagent"
   any_errors_fatal: yes
   connection: local
   tasks:

@@ -1,0 +1,12 @@
+namespace: "{{ ppeagent_namespace }}"
+name: "{{ _ppeagent_deployment_name }}"
+replicaCount: "{{ ppeagent_replica_count }}"
+port: "{{ ppeagent_port }}"
+image:
+    name: "{{ _ppeagent_image_name }}"
+    tag: "{{ _ppeagent_image_tag }}"
+ppeCredentials:
+    username: "{{ ppeagent_email }}"
+    password: "{{ ppeagent_password }}"
+ppeCustomConfig: "{{ ppeagent_custom_config_file }}"
+ppeCustomConfigPodMountPoint: "{{ _ppeagent_custom_config_mount_point }}"

@@ -1,2 +1,6 @@
 ---
 ppeagent_namespace: "ppeagent-dev"
+ppeagent_replica_count: 1
+ppeagent_port: 3001
+ppeagent_email: "{{ lookup('env', 'PPE_AGENT_EMAIL') }}"
+ppeagent_password: "{{ lookup('env', 'PPE_AGENT_PASSWORD') }}"

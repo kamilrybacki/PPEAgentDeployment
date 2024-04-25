@@ -1,1 +1,6 @@
 ---
+ppeagent_namespace: "ppeagent"
+ppeagent_port: 8080
+ppeagent_replica_count: 1
+ppeagent_kubeconfig: "{{ lookup('ansible.builtin.env', 'HOME') }}/.kube/config"
+ppeagent_custom_config_file: ""

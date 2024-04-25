@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+  labels:
+    {{- include "ppeagent.deploymentLabels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+        {{- include "ppeagent.deploymentLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "ppeagent.deploymentLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: "{{ .Values.name }}-worker"
+        image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+        ports:
+        - containerPort: {{ .Values.port }}
+        env:
+        - name: PPE_AGENT_EMAIL
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.name }}-ppe-credentials
+                key: PPE_AGENT_EMAIL
+        - name: PPE_AGENT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.name }}-ppe-credentials
+                key: PPE_AGENT_PASSWORD
+        envFrom:
+        - configMapRef:
+            name: {{ .Values.name }}-deployment-settings
+        volumeMounts:
+        - name: config-volume
+          mountPath: {{ .Values.ppeCustomConfigPodMountPoint }}
+          readOnly: true

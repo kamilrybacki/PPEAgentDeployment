@@ -1,1 +1,12 @@
 ---
+_ppeagent_release_name: "{{ ppeagent_namespace }}-release"
+_ppeagent_deployment_name: "{{ ppeagent_namespace }}-deployment"
+_ppeagent_container_name: "{{ ppeagent_namespace }}-container"
+
+_ppeagent_chart_ref: "{{ role_path }}/chart"
+_ppeagent_values_file: "{{ _ppeagent_chart_ref }}/values.yaml"
+
+_ppeagent_image_name: "kokosz/ppeagent"
+_ppeagent_image_tag: "latest"
+
+_ppeagent_custom_config_mount_point: "/app/config.cfg"

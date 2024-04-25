@@ -1,0 +1,10 @@
+apiVersion: v2
+name: ppeagent
+description: PPE Agent Helm Chart
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+home: https://github.com/kamilrybacki/ppeagentdeployment
+maintainers:
+  - name: Kamil Rybacki
+    email: kamilandrzejrybacki@gmail.com

@@ -1,0 +1,22 @@
+namespace: "{{ ppeagentdeployment_namespace }}"
+name: "{{ _ppeagentdeployment_service_deployment_name }}"
+replicaCount: "{{ ppeagentdeployment_service_replica_count }}"
+port: "{{ ppeagentdeployment_service_port }}"
+portName: "{{ _ppeagentdeployment_service_port_name }}"
+serviceName: "{{ _ppeagentdeployment_service_service_name }}"
+ingress:
+    enabled: "{{ ppeagentdeployment_service_ingress_enabled }}"
+    path: "{{ ppeagentdeployment_service_ingress_path }}"
+    pathType: "{{ _ppeagentdeployment_service_ingress_path_type }}"
+    annotations: {{ ppeagentdeployment_service_ingress_annotations }}
+    tls: {{ ppeagentdeployment_service_ingress_tls }}
+    routes: {{ ppeagentdeployment_service_ingress_routes }}
+image:
+    name: "{{ _ppeagentdeployment_service_image_name }}"
+    tag: "{{ _ppeagentdeployment_service_image_tag }}"
+agent:
+    credentials:
+        username: "{{ ppeagentdeployment_service_email }}"
+        password: "{{ ppeagentdeployment_service_password }}"
+    config: "{{ ppeagentdeployment_service_custom_config_file }}"
+    configPodMountPoint: "{{ _ppeagentdeployment_service_custom_config_mount_point }}"

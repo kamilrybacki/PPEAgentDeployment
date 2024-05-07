@@ -1,0 +1,17 @@
+---
+_ppeagentdeployment_service_release_name: "{{ ppeagentdeployment_namespace }}-release"
+_ppeagentdeployment_service_deployment_name: "{{ ppeagentdeployment_namespace }}-deployment"
+_ppeagentdeployment_service_container_name: "{{ ppeagentdeployment_namespace }}-container"
+_ppeagentdeployment_service_port_name: "ppe-port"
+_ppeagentdeployment_service_service_name: "{{ ppeagentdeployment_namespace }}-service"
+
+_ppeagentdeployment_service_chart_ref: "{{ role_path }}/chart"
+_ppeagentdeployment_service_values_file: "{{ _ppeagentdeployment_service_chart_ref }}/values.yaml"
+
+_ppeagentdeployment_service_image_name: "kokosz/ppeagent"
+_ppeagentdeployment_service_image_tag: "latest"
+
+_ppeagentdeployment_service_custom_config_mount_point: "/app/config.cfg"
+
+_ppeagentdeployment_service_ingress_path_root: "ppeagent"
+_ppeagentdeployment_service_ingress_path_type: "Prefix"

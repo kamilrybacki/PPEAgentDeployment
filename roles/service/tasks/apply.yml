@@ -1,0 +1,58 @@
+---
+- name: "perform PPEAgent deployment"
+  block:
+    - name: "create PPEAgent Helm Chart values file from template"
+      ansible.builtin.template:
+        src: "ppeagent-values.yaml.j2"
+        dest: "{{ _ppeagentdeployment_service_values_file }}"
+        mode: "0644"
+      when: ppeagentdeployment_service_target_state == 'present'
+
+    - name: "create PPEAgent namespace"
+      kubernetes.core.k8s:
+        kind: "Namespace"
+        api_version: "v1"
+        name: "{{ ppeagentdeployment_namespace }}"
+        state: "present"
+        kubeconfig: "{{ ppeagentdeployment_kubeconfig }}"
+      when: ppeagentdeployment_service_target_state == 'present'
+
+    - name: "{{ (ppeagentdeployment_service_target_state == 'present') | ternary('install', 'uninstall') }} PPEAgent Helm Chart"
+      kubernetes.core.helm:
+        state: "{{ ppeagentdeployment_service_target_state }}"
+        kubeconfig: "{{ ppeagentdeployment_kubeconfig }}"
+        release_name: "{{ _ppeagentdeployment_service_release_name }}"
+        chart_ref: "{{ _ppeagentdeployment_service_chart_ref }}"
+        release_namespace: "{{ ppeagentdeployment_namespace }}"
+        values_files: "{{ _ppeagentdeployment_service_values_file }}"
+
+    - name: "delete PPEAgent namespace"
+      kubernetes.core.k8s:
+        kind: "Namespace"
+        api_version: "v1"
+        name: "{{ ppeagentdeployment_namespace }}"
+        state: "{{ ppeagentdeployment_service_target_state }}"
+        kubeconfig: "{{ ppeagentdeployment_kubeconfig }}"
+      when: ppeagentdeployment_service_target_state == 'absent'
+  rescue:
+    - name: "delete PPEAgent namespace"
+      kubernetes.core.k8s:
+        kind: "Namespace"
+        api_version: "v1"
+        name: "{{ ppeagentdeployment_namespace }}"
+        state: "absent"
+        kubeconfig: "{{ ppeagentdeployment_kubeconfig }}"
+      when: ppeagentdeployment_service_target_state == 'present'
+    - name: "cancel the playbook run"
+      ansible.builtin.fail:
+        msg: "PPEAgent deployment failed"
+  always:
+    - name: "remove PPEAgent Helm Chart values file"
+      ansible.builtin.file:
+        path: "{{ _ppeagentdeployment_service_values_file }}"
+        state: "absent"
+      ignore_errors: true
+    - name: "print out the PPEAgent URL"
+      debug:
+        msg: "PPEAgent root URL: https://{{ ppeagentdeployment_service_ingress_host }}/{{ _ppeagentdeployment_service_ingress_path_root }}"
+      when: ppeagentdeployment_service_ingress_enabled == "yes" and ppeagentdeployment_service_target_state == 'present'

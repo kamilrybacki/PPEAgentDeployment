@@ -7,8 +7,10 @@ serviceName: "{{ _ppeagent_service_name }}"
 ingress:
     enabled: "{{ ppeagent_ingress_enabled }}"
     path: "{{ ppeagent_ingress_path }}"
+    pathType: "{{ _ppeagent_ingress_path_type }}"
     annotations: {{ ppeagent_ingress_annotations }}
     tls: {{ ppeagent_ingress_tls }}
+    routes: {{ ppeagent_ingress_routes }}
 image:
     name: "{{ _ppeagent_image_name }}"
     tag: "{{ _ppeagent_image_tag }}"

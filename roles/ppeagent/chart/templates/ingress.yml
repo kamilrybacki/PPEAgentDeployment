@@ -14,12 +14,19 @@ spec:
   rules:
   - http:
       paths:
-        - backend:
-          service:
-            name: {{ .Values.serviceName }}
-            port:
-              number: {{ .Values.port }}
-        path: {{ .Values.ingress.path }}
+        {{- range .Values.ingress.routes | default list }}
+        - path: {{ .path }}
+          {{- if .pathType }}
+          pathType: {{ .pathType }}
+          {{- else }}
+          pathType: Prefix
+          {{- end }}
+          backend:
+            service:
+              name: {{ .serviceName }}
+              port:
+                number: {{ .servicePort }}
+        {{- end }}
 {{- end }}
 {{- if .Values.ingress.tls -}}
   tls:

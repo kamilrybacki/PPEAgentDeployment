@@ -6,8 +6,14 @@ ppeagent_kubeconfig: "{{ lookup('ansible.builtin.env', 'HOME') }}/.kube/config"
 ppeagent_custom_config_file: ""
 
 ppeagent_ingress_enabled: "yes"
-ppeagent_ingress_path: "/ppeagent/(.*)"
+ppeagent_ingress_path: "/{{ _ppeagent_ingress_path_root }}(/|$)(.*)"
 ppeagent_ingress_annotations:
   - key: "nginx.ingress.kubernetes.io/rewrite-target"
-    value: "/$1"
+    value: "/$2"
+  - key: "nginx.ingress.kubernetes.io/use-regex"
+    value: "true"
+ppeagent_ingress_routes:
+  - path: "/{{ _ppeagent_ingress_path_root }}(/|$)(.*)"
+    serviceName: "{{ _ppeagent_service_name }}"
+    servicePort: "{{ ppeagent_port }}"
 ppeagent_ingress_tls: []

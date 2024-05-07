@@ -12,3 +12,6 @@ _ppeagent_image_name: "kokosz/ppeagent"
 _ppeagent_image_tag: "latest"
 
 _ppeagent_custom_config_mount_point: "/app/config.cfg"
+
+_ppeagent_ingress_path_root: "ppeagent"
+_ppeagent_ingress_path_type: "Prefix"

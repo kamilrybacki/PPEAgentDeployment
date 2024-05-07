@@ -3,4 +3,5 @@ ppeagent:
   hosts:
     localhost:
       ansible_connection: local
-      ansible_python_interpreter: "{{ lookup('env', 'HOME') }}/.pyenv/shims/python"
+      # If you are using pyenv, you can set the python interpreter like this:
+      # ansible_python_interpreter: "{{ lookup('env', 'HOME') }}/.pyenv/shims/python"

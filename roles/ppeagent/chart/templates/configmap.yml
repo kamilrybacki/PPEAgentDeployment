@@ -5,13 +5,13 @@ metadata:
   name: "{{ .Values.name }}-custom-config"
   namespace: "{{ .Values.namespace }}"
 data:
-  config.cfg: "{{ .Values.ppeCustomConfig | b64enc }}"
+  config.cfg: "{{ .Values.agent.config | b64enc }}"
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "{{ .Values.name }}-deployment-settings"
+  name: "{{ .Values.name }}-settings"
   namespace: "{{ .Values.namespace }}"
 data:
   PPE_AGENT_PORT: "{{ .Values.port }}"
-  PPE_AGENT_CONFIG: "{{ .Values.ppeCustomConfigPodMountPoint }}"
+  PPE_AGENT_CONFIG: "{{ .Values.agent.configPodMountPoint }}"

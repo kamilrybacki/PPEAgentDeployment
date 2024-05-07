@@ -3,37 +3,57 @@ kind: Deployment
 metadata:
   name: {{ .Values.name }}
   labels:
-    {{- include "ppeagent.deploymentLabels" . | nindent 4 }}
+    app: "{{ .Values.name }}"
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-        {{- include "ppeagent.deploymentLabels" . | nindent 6 }}
+        app: "{{ .Values.name }}"
   template:
     metadata:
       labels:
-        {{- include "ppeagent.deploymentLabels" . | nindent 8 }}
+        app: "{{ .Values.name }}"
     spec:
       containers:
       - name: "{{ .Values.name }}-worker"
         image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
-        ports:
-        - containerPort: {{ .Values.port }}
         env:
-        - name: PPE_AGENT_EMAIL
+          - name: PPE_AGENT_EMAIL
             valueFrom:
               secretKeyRef:
                 name: {{ .Values.name }}-ppe-credentials
                 key: PPE_AGENT_EMAIL
-        - name: PPE_AGENT_PASSWORD
+          - name: PPE_AGENT_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: {{ .Values.name }}-ppe-credentials
                 key: PPE_AGENT_PASSWORD
-        envFrom:
-        - configMapRef:
-            name: {{ .Values.name }}-deployment-settings
+          - name: PPE_AGENT_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.name }}-settings
+                key: PPE_AGENT_PORT
+          - name: PPE_AGENT_CONFIG
+          {{- if .Values.config }}
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Values.name }}-settings
+                key: PPE_AGENT_CONFIG
+          {{- else }}
+            value: ""
+          {{- end }}
+        ports:
+          - containerPort: {{ .Values.port }}
+            name: {{ .Values.portName }}
+    {{- if .Values.config }}
         volumeMounts:
-        - name: config-volume
-          mountPath: {{ .Values.ppeCustomConfigPodMountPoint }}
-          readOnly: true
+            - name: config-volume
+              mountPath: {{ .Values.configPodMountPoint }}
+      volumes:
+      - name: config-volume
+        configMap:
+          name: {{ .Values.name }}-custom-config
+          items:
+            - key: config.cfg
+              path: config.cfg
+    {{- end }}

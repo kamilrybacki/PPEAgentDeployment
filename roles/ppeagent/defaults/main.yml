@@ -4,3 +4,10 @@ ppeagent_port: 8080
 ppeagent_replica_count: 1
 ppeagent_kubeconfig: "{{ lookup('ansible.builtin.env', 'HOME') }}/.kube/config"
 ppeagent_custom_config_file: ""
+
+ppeagent_ingress_enabled: "yes"
+ppeagent_ingress_path: "/ppeagent/(.*)"
+ppeagent_ingress_annotations:
+  - key: "nginx.ingress.kubernetes.io/rewrite-target"
+    value: "/$1"
+ppeagent_ingress_tls: []

@@ -15,3 +15,5 @@ _ppeagentdeployment_service_custom_config_mount_point: "/app/config.cfg"
 
 _ppeagentdeployment_service_ingress_path_root: "ppeagent"
 _ppeagentdeployment_service_ingress_path_type: "Prefix"
+
+_ppeagentdeployment_service_ingress_host: "{{ _ppeagentdeployment_service_service_name }}.{{ ppeagentdeployment_namespace }}.svc.{{ ppeagentdeployment_cluster_domain }}"

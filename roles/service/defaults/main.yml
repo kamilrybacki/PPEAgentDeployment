@@ -4,7 +4,6 @@ ppeagentdeployment_service_replica_count: 1
 ppeagentdeployment_service_custom_config_file: ""
 
 ppeagentdeployment_service_ingress_enabled: "yes"
-ppeagentdeployment_service_ingress_host: "ppeagent.{{ ppeagentdeployment_namespace }}.{{ ppeagentdeployment_cluster_domain }}"
 ppeagentdeployment_service_ingress_path: "/{{ _ppeagentdeployment_service_ingress_path_root }}(/|$)(.*)"
 ppeagentdeployment_service_ingress_annotations:
   - key: "nginx.ingress.kubernetes.io/rewrite-target"

@@ -6,10 +6,11 @@
         cmd: "kubectl cluster-info dump --output=yaml | grep service-account-issuer | awk -F'=' '{print $2}' | awk -F'svc.' '{print $2}'"
         warn: false
       when: ppeagentdeployment_cluster_domain == ""
+      register: _ppeagentdeployment_cluster_domain_result
 
     - name: "set the cluster domain"
       set_fact:
-        ppeagentdeployment_cluster_domain: "{{ ppeagentdeployment_cluster_domain | default('cluster.local') | trim }}"
+        ppeagentdeployment_cluster_domain: "{{ _ppeagentdeployment_cluster_domain_result.stdout | trim | default('cluster.local') }}"
       when: ppeagentdeployment_cluster_domain == ""
 
     - name: "create PPEAgent Helm Chart values file from template"

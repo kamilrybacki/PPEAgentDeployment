@@ -1,6 +1,10 @@
 ---
 - name: "perform PPEAgent deployment"
   block:
+    - name: "if no cluster domain is set, try getting it from cluster info"
+      set_fact:
+        ppeagentdeployment_cluster_domain: "{{ lookup('community.kubernetes.k8s_info', kubeconfig=ppeagentdeployment_kubeconfig).cluster_domain | default('cluster.local')}}"
+      when: ppeagentdeployment_cluster_domain == ""
     - name: "create PPEAgent Helm Chart values file from template"
       ansible.builtin.template:
         src: "ppeagent-values.yaml.j2"

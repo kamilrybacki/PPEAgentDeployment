@@ -63,7 +63,7 @@ The playbook uses the following playbook-wide variables:
 
 - (**REQUIRED**) `ppeagentdeployment_namespace` - Namespace to deploy PPEAgent to
 - `ppeagentdeployment_kubeconfig` - Path to the `kubectl` configuration file (default: `$HOME/.kube/config`)
-- `ppeagentdeployment_cluster_domain` - Cluster domain (default: read using `k8s_info` module or `cluster.local` if not found)
+- `ppeagentdeployment_cluster_domain` - Cluster domain (default: read from cluster information dump (via service issuer) module or `cluster.local` if not found)
 
 The defaults for these variables are set in the `group_vars/ppeagent.yml` file.
 

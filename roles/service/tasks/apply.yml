@@ -4,7 +4,6 @@
     - name: "if no cluster domain is set, try getting it from cluster info"
       ansible.builtin.shell:
         cmd: "kubectl cluster-info dump --output=yaml | grep service-account-issuer | awk -F'=' '{print $2}' | awk -F'svc.' '{print $2}'"
-        warn: false
       when: ppeagentdeployment_cluster_domain == ""
       register: _ppeagentdeployment_cluster_domain_result
 

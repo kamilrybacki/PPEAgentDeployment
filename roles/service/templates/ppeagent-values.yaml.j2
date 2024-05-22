@@ -6,6 +6,7 @@ portName: "{{ _ppeagentdeployment_service_port_name }}"
 serviceName: "{{ _ppeagentdeployment_service_service_name }}"
 ingress:
     enabled: "{{ ppeagentdeployment_service_ingress_enabled }}"
+    class: "{{ ppeagentdeployment_service_ingress_class }}"
     path: "{{ ppeagentdeployment_service_ingress_path }}"
     pathType: "{{ _ppeagentdeployment_service_ingress_path_type }}"
     annotations: {{ ppeagentdeployment_service_ingress_annotations }}

@@ -49,6 +49,7 @@
         name: "{{ ppeagentdeployment_namespace }}"
         state: "{{ ppeagentdeployment_service_target_state }}"
         kubeconfig: "{{ ppeagentdeployment_kubeconfig }}"
+        wait: yes
       when: ppeagentdeployment_service_target_state == 'absent'
   rescue:
     - name: "delete PPEAgent namespace"

@@ -9,9 +9,28 @@ ingress:
     class: "{{ ppeagentdeployment_service_ingress_class }}"
     path: "{{ ppeagentdeployment_service_ingress_path }}"
     pathType: "{{ _ppeagentdeployment_service_ingress_path_type }}"
-    annotations: {{ ppeagentdeployment_service_ingress_annotations }}
-    tls: {{ ppeagentdeployment_service_ingress_tls }}
-    routes: {{ ppeagentdeployment_service_ingress_routes }}
+    annotations:
+
+        {% for annotation in ppeagentdeployment_service_ingress_annotations %}
+
+        - key: "{{ annotation.key }}"
+          value: "{{ annotation.value }}"
+
+        {% endfor %}
+
+    routes:
+        {% for route in ppeagentdeployment_service_ingress_routes %}
+
+        - path: "{{ route.path }}"
+          serviceName: "{{ route.serviceName }}"
+          servicePort: "{{ route.servicePort }}"
+
+        {% endfor %}
+
+    tls:
+        - hosts:
+            - "{{ _ppeagentdeployment_service_ingress_host }}"
+
 image:
     name: "{{ _ppeagentdeployment_service_image_name }}"
     tag: "{{ _ppeagentdeployment_service_image_tag }}"

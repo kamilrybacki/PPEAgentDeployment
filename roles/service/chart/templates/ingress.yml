@@ -31,11 +31,11 @@ spec:
 {{- end }}
 {{- if .Values.ingress.tls -}}
   tls:
-  {{- range .Values.ingress.tls | default list }}
   - hosts:
-    {{- range .hosts }}
-      - {{ . }}
+    {{- range .Values.ingress.tls.hosts }}
+    - {{ . | quote }}
     {{- end }}
-    secretName: {{ .secretName }}
-  {{- end }}
+    {{- if .Values.ingress.tls.secretName }}
+    secretName: {{ .Values.ingress.tls.secretName }}
+    {{- end }}
 {{- end }}

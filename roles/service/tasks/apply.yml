@@ -51,21 +51,3 @@
         kubeconfig: "{{ ppeagentdeployment_kubeconfig }}"
         wait: yes
       when: ppeagentdeployment_service_target_state == 'absent'
-  rescue:
-    - name: "delete PPEAgent namespace"
-      kubernetes.core.k8s:
-        kind: "Namespace"
-        api_version: "v1"
-        name: "{{ ppeagentdeployment_namespace }}"
-        state: "absent"
-        kubeconfig: "{{ ppeagentdeployment_kubeconfig }}"
-      when: ppeagentdeployment_service_target_state == 'present'
-    - name: "cancel the playbook run"
-      ansible.builtin.fail:
-        msg: "PPEAgent deployment failed"
-  always:
-    - name: "remove PPEAgent Helm Chart values file"
-      ansible.builtin.file:
-        path: "{{ _ppeagentdeployment_service_values_file }}"
-        state: "absent"
-      ignore_errors: true

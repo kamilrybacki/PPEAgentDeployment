@@ -48,6 +48,7 @@ By default You need two things set up:
 ```bash
 export PPE_AGENT_EMAIL="oscar@astora.com"
 export PPE_AGENT_PASSWORD="estusflask"
+```
 
 ```yaml
 # Example: Edit development/group_vars/ppeagent.yml

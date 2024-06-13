@@ -1,5 +1,12 @@
 # PPEAgentDeployment
 
+<img
+    src='.github/assets/PPEAgentDeployment.svg'
+    alt='PPE Deployment agent logo'
+    width='200'
+    style='display: block; margin: 0 auto;'
+/>
+
 The PPEAgentDeployment project provides a streamlined way to configure and deploy the PPEAgent on a Kubernetes cluster using Ansible playbooks. Here’s an in-depth guide based on the provided project details.
 
 ## Overview

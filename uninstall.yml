@@ -6,4 +6,4 @@
   tasks:
     - include_role: { name: "service", tasks_from: "apply" }
       vars:
-        ppeagentdeployment_service_target_state: "absent"
+        ppeagentdeployment_deploy_target_state: "absent"

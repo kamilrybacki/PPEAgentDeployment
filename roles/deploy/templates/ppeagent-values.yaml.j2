@@ -1,0 +1,53 @@
+namespace: "{{ ppeagentdeployment_namespace }}"
+name: "{{ _ppeagentdeployment_deploy_deployment_name }}"
+replicaCount: "{{ ppeagentdeployment_deploy_replica_count }}"
+port: "{{ ppeagentdeployment_deploy_port }}"
+portName: "{{ _ppeagentdeployment_deploy_port_name }}"
+serviceName: "{{ _ppeagentdeployment_deploy_service_name }}"
+ingress:
+    enabled: "{{ ppeagentdeployment_deploy_ingress_enabled }}"
+    class: "{{ ppeagentdeployment_deploy_ingress_class }}"
+    path: "{{ ppeagentdeployment_deploy_ingress_path }}"
+    pathType: "{{ _ppeagentdeployment_deploy_ingress_path_type }}"
+    annotations:
+
+        {% for annotation in ppeagentdeployment_deploy_ingress_annotations %}
+
+        - key: "{{ annotation.key }}"
+          value: "{{ annotation.value }}"
+
+        {% endfor %}
+
+    routes:
+        {% for route in ppeagentdeployment_deploy_ingress_routes %}
+
+        - path: "{{ route.path }}"
+          serviceName: "{{ route.serviceName }}"
+          servicePort: "{{ route.servicePort }}"
+
+        {% endfor %}
+
+    tls:
+        enabled: "{{ ppeagentdeployment_deploy_ingress_enable_tls }}"
+        hosts:
+            {% for host in ppeagentdeployment_deploy_ingress_tls_hosts %}
+
+            - "{{ host }}"
+
+            {% endfor %}
+
+        {% if ppeagentdeployment_deploy_ingress_tls_secret_name %}
+
+        secretName: "{{ ppeagentdeployment_deploy_ingress_tls_secret_name }}"
+
+        {% endif %}
+
+image:
+    name: "{{ _ppeagentdeployment_deploy_image_name }}"
+    tag: "{{ _ppeagentdeployment_deploy_image_tag }}"
+agent:
+    credentials:
+        username: "{{ ppeagentdeployment_deploy_email }}"
+        password: "{{ ppeagentdeployment_deploy_password }}"
+    config: "{{ ppeagentdeployment_deploy_custom_config_file }}"
+    configPodMountPoint: "{{ _ppeagentdeployment_deploy_custom_config_mount_point }}"

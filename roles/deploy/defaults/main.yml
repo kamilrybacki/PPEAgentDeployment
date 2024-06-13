@@ -1,0 +1,23 @@
+---
+ppeagentdeployment_deploy_port: 8080
+ppeagentdeployment_deploy_replica_count: 1
+ppeagentdeployment_deploy_custom_config_file: ""
+
+ppeagentdeployment_deploy_ingress_enabled: "yes"
+ppeagentdeployment_deploy_ingress_class: "nginx"
+ppeagentdeployment_deploy_ingress_path: "/{{ ppeagentdeployment_api_version }}(/|$)(.*)"
+ppeagentdeployment_deploy_ingress_annotations:
+  - key: "nginx.ingress.kubernetes.io/rewrite-target"
+    value: "/$2"
+  - key: "nginx.ingress.kubernetes.io/use-regex"
+    value: "true"
+ppeagentdeployment_deploy_ingress_routes:
+  - path: "/{{ ppeagentdeployment_api_version }}(/|$)(.*)"
+    serviceName: "{{ _ppeagentdeployment_deploy_service_name }}"
+    servicePort: "{{ ppeagentdeployment_deploy_port }}"
+
+ppeagentdeployment_deploy_ingress_enable_tls: "yes"
+
+ppeagentdeployment_deploy_ingress_tls_secret_name: ""
+ppeagentdeployment_deploy_ingress_tls_hosts:
+  - "{{ _ppeagentdeployment_deploy_ingress_host }}"

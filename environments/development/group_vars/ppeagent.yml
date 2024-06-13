@@ -1,7 +1,7 @@
 ---
 ppeagentdeployment_namespace: "ppeagent-dev"
 
-ppeagentdeployment_service_replica_count: 1
-ppeagentdeployment_service_port: 3001
-ppeagentdeployment_service_email: "{{ lookup('env', 'PPE_AGENT_EMAIL') }}"
-ppeagentdeployment_service_password: "{{ lookup('env', 'PPE_AGENT_PASSWORD') }}"
+ppeagentdeployment_deploy_replica_count: 1
+ppeagentdeployment_deploy_port: 3001
+ppeagentdeployment_deploy_email: "{{ lookup('env', 'PPE_AGENT_EMAIL') }}"
+ppeagentdeployment_deploy_password: "{{ lookup('env', 'PPE_AGENT_PASSWORD') }}"

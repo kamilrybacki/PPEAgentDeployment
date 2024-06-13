@@ -6,8 +6,8 @@ metadata:
   namespace: {{ .Values.namespace }}
   {{- if .Values.ingress.annotations }}
   annotations:
-  {{- range .Values.ingress.annotations | default list }}
-    {{ .key }}: {{ .value | quote }}
+  {{- range $annotation := .Values.ingress.annotations }}
+    {{ $annotation.key }}: {{ $annotation.value | quote }}
   {{- end }}
   {{- end }}
 spec:
@@ -15,27 +15,30 @@ spec:
   rules:
   - http:
       paths:
-        {{- range .Values.ingress.routes | default list }}
-        - path: {{ .path }}
-          {{- if .pathType }}
-          pathType: {{ .pathType }}
+        {{- range $route := .Values.ingress.routes }}
+        - path: {{ $route.path }}
+          {{- if $route.pathType }}
+          pathType: {{ $route.pathType }}
           {{- else }}
           pathType: Prefix
           {{- end }}
           backend:
             service:
-              name: {{ .serviceName }}
+              name: {{ $route.serviceName }}
               port:
-                number: {{ .servicePort }}
+                number: {{ $route.servicePort }}
         {{- end }}
 {{- end }}
-{{- if .Values.ingress.tls -}}
-  tls:
+
+{{- if eq .Values.ingress.tls.enabled "yes" }}
+
+tls:
   - hosts:
-    {{- range .Values.ingress.tls.hosts }}
-    - {{ . | quote }}
+    {{- range $host := .Values.ingress.tls.hosts }}
+    - {{ $host | quote }}
     {{- end }}
     {{- if .Values.ingress.tls.secretName }}
     secretName: {{ .Values.ingress.tls.secretName }}
     {{- end }}
+
 {{- end }}

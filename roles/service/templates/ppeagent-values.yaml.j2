@@ -28,8 +28,19 @@ ingress:
         {% endfor %}
 
     tls:
-        - hosts:
-            - "{{ _ppeagentdeployment_service_ingress_host }}"
+        enabled: "{{ ppeagentdeployment_service_ingress_enable_tls }}"
+        hosts:
+            {% for host in ppeagentdeployment_service_ingress_tls_hosts %}
+
+            - "{{ host }}"
+
+            {% endfor %}
+
+        {% if ppeagentdeployment_service_ingress_tls_secret_name %}
+
+        secretName: "{{ ppeagentdeployment_service_ingress_tls_secret_name }}"
+
+        {% endif %}
 
 image:
     name: "{{ _ppeagentdeployment_service_image_name }}"

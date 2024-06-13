@@ -1,2 +1,3 @@
 ppeagentdeployment_kubeconfig: "{{ lookup('ansible.builtin.env', 'HOME') }}/.kube/config"
 ppeagentdeployment_cluster_domain: "cluster.local"
+ppeagentdeployment_api_version: "v1"

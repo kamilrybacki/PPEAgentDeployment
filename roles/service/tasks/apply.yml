@@ -39,7 +39,7 @@
 
     - name: "print out the PPEAgent URL"
       debug:
-        msg: "PPEAgent root URL: https://{{ _ppeagentdeployment_service_ingress_host }}/{{ _ppeagentdeployment_service_ingress_path_root }}"
+        msg: "PPEAgent root URL: https://{{ _ppeagentdeployment_service_ingress_host }}/{{ ppeagentdeployment_api_version }}/"
       when: ppeagentdeployment_service_ingress_enabled == "yes" and ppeagentdeployment_service_target_state == 'present'
 
     - name: "delete PPEAgent namespace"

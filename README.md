@@ -43,17 +43,18 @@ Set the required variables in the `group_vars` directory of Your target environm
 By default You need two things set up:
 
 - `ppeagentdeployment_namespace` - Namespace to deploy PPEAgent to (set in the `group_vars/ppeagent.yml` file).
+
+    ```yaml
+    # Example: Edit development/group_vars/ppeagent.yml
+    ppeagentdeployment_namespace: "ppeagent"  # Replace with your target namespace
+    ```
+
 - `PPE_AGENT_EMAIL` and `PPE_AGENT_PASSWORD` - Email and password for the PPEAgent service, set in the environment variables, corresponding to Your credentials in [*MójLicznik*] service.
 
-```bash
-export PPE_AGENT_EMAIL="oscar@astora.com"
-export PPE_AGENT_PASSWORD="estusflask"
-```
-
-```yaml
-# Example: Edit development/group_vars/ppeagent.yml
-ppeagentdeployment_namespace: "ppeagent"  # Replace with your target namespace
-```
+    ```bash
+    export PPE_AGENT_EMAIL="oscar@astora.com"
+    export PPE_AGENT_PASSWORD="estusflask"
+    ```
 
 ### 4. Deploy PPEAgent
 

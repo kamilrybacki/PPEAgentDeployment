@@ -47,7 +47,7 @@ image:
     tag: "{{ _ppeagentdeployment_deploy_image_tag }}"
 agent:
     credentials:
-        username: "{{ ppeagentdeployment_deploy_email }}"
-        password: "{{ ppeagentdeployment_deploy_password }}"
+        username: "{{ ppeagentdeployment_email }}"
+        password: "{{ ppeagentdeployment_password }}"
     config: "{{ ppeagentdeployment_deploy_custom_config_file }}"
     configPodMountPoint: "{{ _ppeagentdeployment_deploy_custom_config_mount_point }}"

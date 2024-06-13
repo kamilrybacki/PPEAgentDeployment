@@ -46,8 +46,8 @@ By default You need two things set up:
 - `PPE_AGENT_EMAIL` and `PPE_AGENT_PASSWORD` - Email and password for the PPEAgent service, set in the environment variables, corresponding to Your credentials in [*MójLicznik*] service.
 
 ```bash
-export PPEAGENT_EMAIL="oscar@astora.com"
-export PPEAGENT_PASSWORD="estusflask"
+export PPE_AGENT_EMAIL="oscar@astora.com"
+export PPE_AGENT_PASSWORD="estusflask"
 
 ```yaml
 # Example: Edit development/group_vars/ppeagent.yml
@@ -97,8 +97,8 @@ of the environment you want to deploy to.
 The playbook uses the following playbook-wide variables:
 
 - (**REQUIRED**) `ppeagentdeployment_namespace` - Namespace to deploy PPEAgent to
-- `ppeagentdeployment_email` - Email address for the PPEAgent service (default: the value of `PPEAGENT_EMAIL` environment variable)
-- `ppeagentdeployment_password` - Password for the PPEAgent service (default: the value of `PPEAGENT_PASSWORD` environment variable)
+- `ppeagentdeployment_email` - Email address for the PPEAgent service (default: the value of `PPE_AGENT_EMAIL` environment variable)
+- `ppeagentdeployment_password` - Password for the PPEAgent service (default: the value of `PPE_AGENT_PASSWORD` environment variable)
 - `ppeagentdeployment_api_version` - Version of the PPEAgent API to deploy (default: `v1`)
 - `ppeagentdeployment_kubeconfig` - Path to the `kubectl` configuration file (default: `$HOME/.kube/config`)
 - `ppeagentdeployment_cluster_domain` - Cluster domain (default: read from cluster information dump (via service issuer) module or `cluster.local` if not found)

@@ -1,53 +1,38 @@
 ---
-- name: "perform PPEAgent deployment"
-  block:
-    - name: "if no cluster domain is set, try getting it from cluster info"
-      ansible.builtin.shell:
-        cmd: "kubectl cluster-info dump --output=yaml | grep service-account-issuer | awk -F'=' '{print $2}' | awk -F'svc.' '{print $2}'"
-      when: ppeagentdeployment_cluster_domain == ""
-      register: _ppeagentdeployment_cluster_domain_result
+- name: "If no cluster domain is set, try getting it from cluster info"
+  ansible.builtin.shell:
+    cmd: "kubectl cluster-info dump --output=yaml | grep service-account-issuer | awk -F'=' '{print $2}' | awk -F'svc.' '{print $2}'"
+  when: ppeagentdeployment_cluster_domain == ""
+  register: _ppeagentdeployment_cluster_domain_result
 
-    - name: "set the cluster domain"
-      set_fact:
-        ppeagentdeployment_cluster_domain: "{{ _ppeagentdeployment_cluster_domain_result.stdout | trim | default('cluster.local') }}"
-      when: ppeagentdeployment_cluster_domain == ""
+- name: "Set the cluster domain"
+  set_fact:
+    ppeagentdeployment_cluster_domain: "{{ _ppeagentdeployment_cluster_domain_result.stdout | trim | default('cluster.local') }}"
+  when: ppeagentdeployment_cluster_domain == ""
 
-    - name: "create PPEAgent Helm Chart values file from template"
-      ansible.builtin.template:
-        src: "ppeagent-values.yaml.j2"
-        dest: "{{ _ppeagentdeployment_deploy_values_file }}"
-        mode: "0644"
-      when: ppeagentdeployment_deploy_target_state == 'present'
+- name: "Create PPEAgent Helm Chart values file from template"
+  ansible.builtin.template:
+    src: "ppeagent-values.yaml.j2"
+    dest: "{{ _ppeagentdeployment_deploy_values_file }}"
+    mode: "0644"
 
-    - name: "create PPEAgent namespace"
-      kubernetes.core.k8s:
-        kind: "Namespace"
-        api_version: "v1"
-        name: "{{ ppeagentdeployment_namespace }}"
-        state: "present"
-        kubeconfig: "{{ ppeagentdeployment_kubeconfig }}"
-      when: ppeagentdeployment_deploy_target_state == 'present'
+- name: "Create PPEAgent namespace"
+  kubernetes.core.k8s:
+    kind: "Namespace"
+    api_version: "v1"
+    name: "{{ ppeagentdeployment_namespace }}"
+    state: "present"
+    kubeconfig: "{{ ppeagentdeployment_kubeconfig }}"
 
-    - name: "{{ (ppeagentdeployment_deploy_target_state == 'present') | ternary('install', 'uninstall') }} PPEAgent Helm Chart"
-      kubernetes.core.helm:
-        state: "{{ ppeagentdeployment_deploy_target_state }}"
-        kubeconfig: "{{ ppeagentdeployment_kubeconfig }}"
-        release_name: "{{ _ppeagentdeployment_deploy_release_name }}"
-        chart_ref: "{{ _ppeagentdeployment_deploy_chart_ref }}"
-        release_namespace: "{{ ppeagentdeployment_namespace }}"
-        values_files: "{{ _ppeagentdeployment_deploy_values_file }}"
+- name: "Install PPEAgent Helm Chart"
+  kubernetes.core.helm:
+    state: "present"
+    kubeconfig: "{{ ppeagentdeployment_kubeconfig }}"
+    release_name: "{{ _ppeagentdeployment_deploy_release_name }}"
+    chart_ref: "{{ _ppeagentdeployment_deploy_chart_ref }}"
+    release_namespace: "{{ ppeagentdeployment_namespace }}"
+    values_files: "{{ _ppeagentdeployment_deploy_values_file }}"
 
-    - name: "print out the PPEAgent URL"
-      debug:
-        msg: "PPEAgent root URL: https://{{ _ppeagentdeployment_deploy_ingress_host }}/{{ ppeagentdeployment_api_version }}/"
-      when: ppeagentdeployment_deploy_ingress_enabled == "yes" and ppeagentdeployment_deploy_target_state == 'present'
-
-    - name: "delete PPEAgent namespace"
-      kubernetes.core.k8s:
-        kind: "Namespace"
-        api_version: "v1"
-        name: "{{ ppeagentdeployment_namespace }}"
-        state: "{{ ppeagentdeployment_deploy_target_state }}"
-        kubeconfig: "{{ ppeagentdeployment_kubeconfig }}"
-        wait: yes
-      when: ppeagentdeployment_deploy_target_state == 'absent'
+- name: "print out the PPEAgent URL"
+  debug:
+    msg: "PPEAgent root URL: https://{{ _ppeagentdeployment_deploy_ingress_host }}/{{ ppeagentdeployment_api_version }}/"

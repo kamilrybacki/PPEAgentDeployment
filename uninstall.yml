@@ -4,6 +4,4 @@
   any_errors_fatal: yes
   connection: local
   tasks:
-    - include_role: { name: "service", tasks_from: "apply" }
-      vars:
-        ppeagentdeployment_deploy_target_state: "absent"
+    - include_role: { name: "deploy", tasks_from: "remove" }

@@ -5,5 +5,3 @@
   connection: local
   tasks:
     - include_role: { name: "deploy", tasks_from: "apply" }
-      vars:
-        ppeagentdeployment_deploy_target_state: "present"

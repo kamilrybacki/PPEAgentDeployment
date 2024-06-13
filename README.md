@@ -38,13 +38,20 @@ cd PPEAgentDeployment
 
 ### 3. Configure Environment Variables
 
-Set the required variables in the `group_vars` directory. This directory contains environment-specific configurations. You'll need to define variables such as the namespace for the deployment.
+Set the required variables in the `group_vars` directory of Your target environment. This directory contains environment-specific configurations.
 
-- **Namespace**: Specify where to deploy PPEAgent.
+By default You need two things set up:
+
+- `ppeagentdeployment_namespace` - Namespace to deploy PPEAgent to (set in the `group_vars/ppeagent.yml` file).
+- `PPE_AGENT_EMAIL` and `PPE_AGENT_PASSWORD` - Email and password for the PPEAgent service, set in the environment variables, corresponding to Your credentials in [*MójLicznik*] service.
+
+```bash
+export PPEAGENT_EMAIL="oscar@astora.com"
+export PPEAGENT_PASSWORD="estusflask"
 
 ```yaml
-# Example: Edit group_vars/ppeagent.yml
-ppeagentdeployment_namespace: "default"  # Replace with your target namespace
+# Example: Edit development/group_vars/ppeagent.yml
+ppeagentdeployment_namespace: "ppeagent"  # Replace with your target namespace
 ```
 
 ### 4. Deploy PPEAgent
@@ -90,7 +97,9 @@ of the environment you want to deploy to.
 The playbook uses the following playbook-wide variables:
 
 - (**REQUIRED**) `ppeagentdeployment_namespace` - Namespace to deploy PPEAgent to
-- `ppeagentdeployment_chart_version` - Version of the PPEAgent Helm chart to deploy (default: `v1`)
+- `ppeagentdeployment_email` - Email address for the PPEAgent service (default: the value of `PPEAGENT_EMAIL` environment variable)
+- `ppeagentdeployment_password` - Password for the PPEAgent service (default: the value of `PPEAGENT_PASSWORD` environment variable)
+- `ppeagentdeployment_api_version` - Version of the PPEAgent API to deploy (default: `v1`)
 - `ppeagentdeployment_kubeconfig` - Path to the `kubectl` configuration file (default: `$HOME/.kube/config`)
 - `ppeagentdeployment_cluster_domain` - Cluster domain (default: read from cluster information dump (via service issuer) module or `cluster.local` if not found)
 
@@ -98,9 +107,12 @@ The defaults for these variables are set in the `group_vars/ppeagent.yml` file.
 
 ### Role-specific variables
 
-**Convention**: Role variables are prepended with the playbook name followed by the role name and separated by an underscore i.e. `ppeagentdeploment_service_`
-and are to be set in the `group_vars` directory of the environment you want
-to deploy PPEAagent to (with defaults set in the role's `defaults/main.yml` file).
+**Convention**: Role variables are prepended with the playbook name followed by the role name and separated by an underscore i.e. `ppeagentdeploment_<ROLE>_`.
+Their default values are to be stored in the `roles/<ROLE>/defaults/main.yml` file.
+Any internal variables used in the roles are prepended with an underscore and located in the `roles/<ROLE>/vars/main.yml` file. By internal variables, we mean variables that are not meant to be set by the user but are used internally by the role.
+
+However, nothing stops you from setting these variables in the `group_vars` directory of the environment you want to deploy to or in any other way you see fit.
+Just bear in ming that they are not a part of "public" API of the playbook.
 
 Each role is responsible for a specific part of the deployment process and
 contains a set of tasks that need to be executed.
@@ -136,5 +148,6 @@ contains a set of tasks that need to be executed.
 
 To see values for internal variables used in the roles (underscored variables), please refer to the [`vars/main.yml`] file in the role's directory.
 
+[*MójLicznik*]: https://mojlicznik.energa-operator.pl/
 [port-forward the service manually]: https://kubernetes.io/docs/tasks/access-application-cluster/port-forward-access-application-cluster/
 [`vars/main.yml`]: ./roles/deploy/vars/main.yml

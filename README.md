@@ -139,7 +139,7 @@ contains a set of tasks that need to be executed.
 | `ppeagentdeployment_deploy_ingress_annotations`     | Annotations to be applied to the Ingress resource.                                      | See below for default annotations                      |
 | `ppeagentdeployment_deploy_ingress_routes`          | Defines the Ingress routes, including paths and service settings.                       | See below for default routes                           |
 | `ppeagentdeployment_deploy_ingress_enable_tls`      | Indicates if TLS should be enabled for the Ingress.                                     | `"yes"`                                                |
-| `ppeagentdeployment_deploy_ingress_tls_secret_name` | The name of the TLS secret to be used by the Ingress.                                   | `""` (empty string, meaning no TLS secret is created and default certification is used (if configured))  |
+| `ppeagentdeployment_deploy_ingress_tls_secret_name` | The name of the TLS secret to be used by the Ingress.                                   | `""` (empty string, meaning no TLS secret is created and default certification is used **if configured**)  |
 | `ppeagentdeployment_deploy_ingress_tls_hosts`       | Hosts for which TLS should be enabled.                                                  | `["{{ _ppeagentdeployment_deploy_ingress_host }}"]`   |
 
 ### Default Annotations for `ppeagentdeployment_deploy_ingress_annotations`
